@@ -1,0 +1,38 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "installCommand": "npm install",
+  "framework": "vite",
+  "rewrites": [
+    {
+      "source": "/api/gemini/:path*",
+      "destination": "https://generativelanguage.googleapis.com/:path*"
+    },
+    {
+      "source": "/api/together/:path*",
+      "destination": "https://api.together.xyz/:path*"
+    },
+    {
+      "source": "/api/:path*",
+      "destination": "https://BACKEND_URL_PLACEHOLDER/:path*"
+    },
+    {
+      "source": "/health",
+      "destination": "https://BACKEND_URL_PLACEHOLDER/health"
+    },
+    {
+      "source": "/((?!api|health|assets|favicon).*)",
+      "destination": "/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET,POST,PUT,DELETE,OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "Content-Type,Authorization" }
+      ]
+    }
+  ]
+}
