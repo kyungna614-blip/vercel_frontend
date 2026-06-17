@@ -142,63 +142,72 @@ export default function CreatorOnboard() {
       </header>
 
       {/* Main content */}
-      <main className="relative z-10 flex-1 px-6 py-12 max-w-4xl mx-auto w-full">
+      <main className="relative z-10 flex-1 px-4 sm:px-8 py-10 sm:py-16 max-w-4xl mx-auto w-full">
 
         {/* Welcome banner */}
-        <div className="mb-10 text-center">
-          <div className="inline-flex items-center gap-3 mb-6 px-5 py-3 rounded-2xl border"
-            style={{ background: 'rgba(255,255,255,0.04)', borderColor: 'rgba(255,255,255,0.1)' }}>
+        <div className="mb-12 text-center">
+          {/* Creator profile card */}
+          <div className="inline-flex items-center gap-4 mb-8 px-6 py-4 rounded-2xl border"
+            style={{ background: 'rgba(255,255,255,0.03)', borderColor: 'rgba(255,255,255,0.08)' }}>
             {creator.avatar ? (
-              <img src={creator.avatar} alt="" className="w-12 h-12 rounded-full object-cover border-2"
+              <img src={creator.avatar} alt="" className="w-14 h-14 rounded-full object-cover border-2 flex-shrink-0"
                 style={{ borderColor: 'rgba(192,57,43,0.4)' }} />
             ) : (
-              <div className="w-12 h-12 rounded-full flex items-center justify-center text-[18px] font-bold"
-                style={{ background: 'rgba(192,57,43,0.2)', color: '#e87070' }}>
+              <div className="w-14 h-14 rounded-full flex items-center justify-center text-[20px] font-bold flex-shrink-0"
+                style={{ background: 'rgba(192,57,43,0.15)', color: '#e87070' }}>
                 {(creator.name || '?')[0]}
               </div>
             )}
             <div className="text-left">
-              <p className="text-[16px] font-bold text-white">{creator.name}</p>
-              <div className="flex items-center gap-2 text-[12px] text-white/40">
+              <p className="text-[17px] font-bold text-white mb-0.5">{creator.name}</p>
+              <div className="flex items-center gap-3 text-[12px] text-white/40">
                 <span className="flex items-center gap-1">
-                  <Youtube size={11} className="text-red-500" />
+                  <Youtube size={12} className="text-red-500" />
                   {creator.handle ? `@${creator.handle.replace('@','')}` : ''}
                 </span>
                 {creator.follower_count > 0 && (
-                  <span>{fmt(creator.follower_count)} followers</span>
+                  <span className="font-medium">{fmt(creator.follower_count)} followers</span>
                 )}
               </div>
-              <p className="text-[11px] text-white/30">
-                {(creator.niche || []).join(', ') || 'Creator'}
-              </p>
+              {(creator.niche || []).length > 0 && (
+                <div className="flex gap-1.5 mt-2">
+                  {(creator.niche || []).map((n, i) => (
+                    <span key={i} className="text-[10px] px-2 py-0.5 rounded-full"
+                      style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.4)' }}>{n}</span>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 
           <h1 style={{
-            fontSize: 'clamp(30px, 5vw, 50px)',
+            fontSize: 'clamp(28px, 5vw, 46px)',
             fontWeight: 800,
-            lineHeight: 1.05,
+            lineHeight: 1.08,
             letterSpacing: '-0.04em',
-            marginBottom: 12,
+            marginBottom: 16,
           }}>
             Welcome, {creator.name?.split(' ')[0] || 'Creator'}
           </h1>
-          <p className="text-[16px] text-white/40 max-w-lg mx-auto leading-relaxed">
-            We've analyzed your audience, engagement, and niche to create
-            {' '}<span className="text-white/70 font-medium">{ideas.length} custom product ideas</span>{' '}
+          <p className="text-[15px] text-white/40 max-w-md mx-auto leading-relaxed">
+            We've analyzed your audience and niche to create
+            {' '}<span className="text-white/70 font-semibold">{ideas.length} custom product ideas</span>{' '}
             just for you. Pick one and we'll build it.
           </p>
         </div>
 
         {/* Ideas grid */}
         {ideas.length === 0 ? (
-          <div className="text-center py-16">
-            <Sparkles size={32} className="text-white/20 mx-auto mb-4" />
-            <p className="text-[14px] text-white/30">No product ideas generated yet. Check back soon!</p>
+          <div className="text-center py-20">
+            <Sparkles size={36} className="text-white/15 mx-auto mb-5" />
+            <p className="text-[15px] text-white/30 font-medium">No product ideas generated yet.</p>
+            <p className="text-[13px] text-white/20 mt-1">Check back soon — we're working on it!</p>
           </div>
         ) : (
           <>
-            <div className="grid md:grid-cols-2 gap-4 mb-8">
+            <p className="text-[11px] font-bold uppercase tracking-widest text-center mb-6"
+              style={{ color: 'rgba(192,57,43,0.6)' }}>Choose your product</p>
+            <div className="grid md:grid-cols-2 gap-5 mb-10">
               {ideas.map((idea, idx) => {
                 const meta = CATEGORY_META[idea.business_model] || CATEGORY_META.other
                 const Icon = meta.icon
@@ -207,11 +216,12 @@ export default function CreatorOnboard() {
                   <div
                     key={idea.id}
                     onClick={() => setSelectedId(idea.id)}
-                    className="relative rounded-2xl border p-6 cursor-pointer transition-all duration-200"
+                    className="relative rounded-2xl border cursor-pointer transition-all duration-200"
                     style={{
-                      background: isSelected ? 'rgba(255,255,255,0.06)' : '#111',
-                      borderColor: isSelected ? 'rgba(192,57,43,0.4)' : 'rgba(255,255,255,0.08)',
-                      transform: isSelected ? 'scale(1.01)' : 'scale(1)',
+                      padding: '28px 24px',
+                      background: isSelected ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.02)',
+                      borderColor: isSelected ? 'rgba(192,57,43,0.5)' : 'rgba(255,255,255,0.07)',
+                      boxShadow: isSelected ? '0 0 30px rgba(192,57,43,0.1)' : 'none',
                     }}
                   >
                     {/* Best match badge */}
@@ -278,16 +288,19 @@ export default function CreatorOnboard() {
             </div>
 
             {/* CTA */}
-            <div className="text-center">
+            <div className="text-center pt-4">
               <button
                 onClick={handleSelect}
                 disabled={building || !selectedId}
-                className="inline-flex items-center gap-2.5 text-[16px] font-bold px-10 py-4 rounded-2xl transition-all duration-200 disabled:opacity-40"
+                className="inline-flex items-center gap-3 text-[16px] font-bold px-12 py-4.5 rounded-2xl transition-all duration-200 disabled:opacity-40"
                 style={{
                   background: 'linear-gradient(135deg, #c0392b, #a93226)',
                   color: 'white',
-                  boxShadow: '0 4px 28px rgba(192,57,43,0.5)',
+                  boxShadow: '0 6px 32px rgba(192,57,43,0.45)',
+                  padding: '18px 48px',
                 }}
+                onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 8px 44px rgba(192,57,43,0.65)'; e.currentTarget.style.transform = 'translateY(-1px)' }}
+                onMouseLeave={e => { e.currentTarget.style.boxShadow = '0 6px 32px rgba(192,57,43,0.45)'; e.currentTarget.style.transform = 'translateY(0)' }}
               >
                 {building ? (
                   <><Loader2 size={18} className="animate-spin" /> Building your product...</>
@@ -295,7 +308,7 @@ export default function CreatorOnboard() {
                   <><Rocket size={18} /> Launch {selectedIdea?.product_name || 'this product'}</>
                 )}
               </button>
-              <p className="text-[12px] text-white/20 mt-3">
+              <p className="text-[12px] text-white/20 mt-4">
                 We'll generate your landing page, marketing plan, and launch materials
               </p>
             </div>
