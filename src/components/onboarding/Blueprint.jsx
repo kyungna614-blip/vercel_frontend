@@ -3,6 +3,8 @@ import { useForge, getAccent } from '../../App'
 import { ArrowLeft, ArrowRight, Globe, Smartphone, ShoppingBag, Users, Youtube, Instagram, Twitter, CheckCircle, Play } from 'lucide-react'
 import WingLogo from '../ui/WingLogo'
 
+const API = import.meta.env.VITE_API_URL || ''
+
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
 function fmt(n) {
@@ -329,7 +331,7 @@ export default function Blueprint() {
       return
     }
     setLoading(true)
-    fetch(`/api/cofounder/creators/${creatorData.id}/ideas`)
+    fetch(`${API}/api/cofounder/creators/${creatorData.id}/ideas`)
       .then(res => {
         if (!res.ok) throw new Error('Failed to fetch ideas')
         return res.json()
@@ -391,7 +393,7 @@ export default function Blueprint() {
     
     setIsBuilding(true)
     try {
-      const res = await fetch(`/api/cofounder/creators/${creatorData.id}/select-idea`, {
+      const res = await fetch(`${API}/api/cofounder/creators/${creatorData.id}/select-idea`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

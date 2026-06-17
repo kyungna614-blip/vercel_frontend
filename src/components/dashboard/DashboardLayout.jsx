@@ -15,6 +15,8 @@ import { useAuth } from '../../context/AuthContext'
 import { Sparkles, LogOut } from 'lucide-react'
 import WingLogo from '../ui/WingLogo'
 
+const API = import.meta.env.VITE_API_URL || ''
+
 const TAB_COMPONENTS = {
   marketing: Marketing,
   youtube_leads: (props) => <PlatformLeads platform="youtube" {...props} />,
@@ -59,7 +61,7 @@ export default function DashboardLayout() {
       setLoading(false)
       return
     }
-    fetch(`/api/cofounder/creators/${creatorData.id}/dashboard`)
+    fetch(`${API}/api/cofounder/creators/${creatorData.id}/dashboard`)
       .then(res => {
         if (!res.ok) throw new Error('Failed to fetch dashboard data')
         return res.json()

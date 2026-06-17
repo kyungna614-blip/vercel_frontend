@@ -5,6 +5,8 @@ import {
   CheckCircle, ArrowRight, Loader2, BarChart2, ShieldAlert, Sparkles
 } from 'lucide-react'
 
+const API = import.meta.env.VITE_API_URL || ''
+
 const PLATFORM_INFOS = {
   youtube: {
     label: 'YouTube',
@@ -54,7 +56,7 @@ export default function PlatformLeads({ platform }) {
     setLoading(true)
     setError(null)
     try {
-      const res = await fetch(`/api/cofounder/creators?platform=${platform}`)
+      const res = await fetch(`${API}/api/cofounder/creators?platform=${platform}`)
       if (!res.ok) throw new Error(`Failed to load ${info.label} leads`)
       const data = await res.json()
       setLeads(data)
@@ -75,7 +77,7 @@ export default function PlatformLeads({ platform }) {
     setScraping(true)
     setScrapeError(null)
     try {
-      const res = await fetch('/api/cofounder/scrape', {
+      const res = await fetch(`${API}/api/cofounder/scrape`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ handle: handleInput.trim(), platform })
@@ -97,7 +99,7 @@ export default function PlatformLeads({ platform }) {
     e.stopPropagation()
     if (!window.confirm('Are you sure you want to delete this lead?')) return
     try {
-      const res = await fetch(`/api/cofounder/creators/${id}`, {
+      const res = await fetch(`${API}/api/cofounder/creators/${id}`, {
         method: 'DELETE'
       })
       if (!res.ok) throw new Error('Failed to delete lead')

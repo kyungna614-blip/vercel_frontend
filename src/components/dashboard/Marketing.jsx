@@ -6,6 +6,8 @@ import {
   AlertCircle, MessageSquare, Send, ArrowRight, Play, CheckCircle
 } from 'lucide-react'
 
+const API = import.meta.env.VITE_API_URL || ''
+
 // Pixel art coach component
 function PixelCoach({ message, onChat }) {
   const [displayText, setDisplayText] = useState('')
@@ -161,7 +163,7 @@ export default function Marketing({ dashboardData, refetch }) {
     setLoadingDraft(true)
     setShowEmailModal(true)
     try {
-      const res = await fetch(`/api/cofounder/creators/${creator.id}/outreach/generate?tone=friendly`, {
+      const res = await fetch(`${API}/api/cofounder/creators/${creator.id}/outreach/generate?tone=friendly`, {
         method: 'POST'
       })
       if (!res.ok) throw new Error('Failed to generate draft')
@@ -182,7 +184,7 @@ export default function Marketing({ dashboardData, refetch }) {
     if (!creator?.id) return
     setSendingEmail(true)
     try {
-      const res = await fetch(`/api/cofounder/creators/${creator.id}/outreach/send`, {
+      const res = await fetch(`${API}/api/cofounder/creators/${creator.id}/outreach/send`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ subject: draftSubject, body: draftBody })

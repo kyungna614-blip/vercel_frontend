@@ -15,6 +15,8 @@ import {
 import WingLogo from '../ui/WingLogo'
 import { useAuth } from '../../context/AuthContext'
 
+const API = import.meta.env.VITE_API_URL || ''
+
 function SignOutBtn() {
   const auth = useAuth()
   if (!auth?.isAuthenticated) return null
@@ -62,7 +64,7 @@ export default function CreatorPortal() {
   useEffect(() => {
     if (!creatorId) return
     setLoading(true)
-    fetch(`/api/automation/dashboard/${creatorId}`)
+    fetch(`${API}/api/automation/dashboard/${creatorId}`)
       .then(res => {
         if (!res.ok) {
           if (res.status === 400) throw new Error('no_product')

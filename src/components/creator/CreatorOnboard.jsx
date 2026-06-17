@@ -15,6 +15,8 @@ import {
 } from 'lucide-react'
 import WingLogo from '../ui/WingLogo'
 
+const API = import.meta.env.VITE_API_URL || ''
+
 const CATEGORY_META = {
   course:           { icon: Globe,       label: 'Online Course',      color: '#3b82f6' },
   community:        { icon: Users,       label: 'Premium Community',  color: '#8b5cf6' },
@@ -50,7 +52,7 @@ export default function CreatorOnboard() {
     setLoading(true)
     setError(null)
 
-    fetch(`/api/automation/onboard/${creatorId}`)
+    fetch(`${API}/api/automation/onboard/${creatorId}`)
       .then(res => {
         if (!res.ok) throw new Error(res.status === 404 ? 'Creator not found' : `Error ${res.status}`)
         return res.json()
@@ -72,7 +74,7 @@ export default function CreatorOnboard() {
     if (!selectedId) return
     setBuilding(true)
     try {
-      const res = await fetch(`/api/automation/onboard/${creatorId}/select`, {
+      const res = await fetch(`${API}/api/automation/onboard/${creatorId}/select`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ idea_id: selectedId }),

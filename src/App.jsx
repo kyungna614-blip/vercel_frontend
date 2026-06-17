@@ -101,21 +101,13 @@ export default function App() {
     )
   }
 
-  // ── Creator onboard (requires auth, redirects if not logged in) ────
-  const ProtectedCreatorOnboard = () => {
-    const auth = useAuth()
-    const { creatorId } = useParams()
-    if (auth.loading) return <LoadingScreen />
-    if (!auth.isAuthenticated) return <Navigate to={`/auth/creator?redirect=/onboard/${creatorId}`} replace />
+  // ── Creator onboard (public — no auth, creators click from email) ────
+  const PublicCreatorOnboard = () => {
     return <CreatorOnboard />
   }
 
-  // ── Creator portal (requires auth) ───────────────────────────────
-  const ProtectedCreatorPortal = () => {
-    const auth = useAuth()
-    const { creatorId } = useParams()
-    if (auth.loading) return <LoadingScreen />
-    if (!auth.isAuthenticated) return <Navigate to={`/auth/creator?redirect=/portal/${creatorId}`} replace />
+  // ── Creator portal (public — no auth) ────────────────────────
+  const PublicCreatorPortal = () => {
     return <CreatorPortal />
   }
 
@@ -146,9 +138,9 @@ export default function App() {
             <Route path="/auth/admin"    element={<AdminAuthPage />} />
             <Route path="/auth/creator"  element={<CreatorAuthPage />} />
 
-            {/* Creator-facing routes (from outreach email links — require auth) */}
-            <Route path="/onboard/:creatorId" element={<ProtectedCreatorOnboard />} />
-            <Route path="/portal/:creatorId"  element={<ProtectedCreatorPortal />} />
+            {/* Creator-facing routes (from outreach email links — public, no auth) */}
+            <Route path="/onboard/:creatorId" element={<PublicCreatorOnboard />} />
+            <Route path="/portal/:creatorId"  element={<PublicCreatorPortal />} />
 
             {/* Landing page (public) */}
             <Route path="/welcome" element={
