@@ -7,6 +7,8 @@ import {
 } from 'lucide-react'
 import WingLogo from '../ui/WingLogo'
 
+const API = import.meta.env.VITE_API_URL || ''
+
 const NICHE_PRESETS = [
   { label: 'Tech Reviews', value: 'tech reviews', emoji: '💻' },
   { label: 'Fitness', value: 'fitness workout', emoji: '💪' },
@@ -78,11 +80,11 @@ export default function NicheDiscovery() {
   const loadStats = useCallback(async () => {
     try {
       const [s, r, c, e, sc] = await Promise.all([
-        fetch('/api/admin/stats').then(r => r.json()),
-        fetch('/api/admin/pipeline-runs').then(r => r.json()),
-        fetch('/api/admin/creators').then(r => r.json()),
-        fetch('/api/admin/email-tracker').then(r => r.json()),
-        fetch('/api/admin/scrape-logs').then(r => r.json()),
+        fetch(`${API}/api/admin/stats`).then(r => r.json()),
+        fetch(`${API}/api/admin/pipeline-runs`).then(r => r.json()),
+        fetch(`${API}/api/admin/creators`).then(r => r.json()),
+        fetch(`${API}/api/admin/email-tracker`).then(r => r.json()),
+        fetch(`${API}/api/admin/scrape-logs`).then(r => r.json()),
       ])
       setStats(s); setRuns(r); setCreators(c); setEmailLogs(e); setScrapeLogs(sc)
     } catch {}
@@ -94,7 +96,7 @@ export default function NicheDiscovery() {
     if (!keyword.trim()) return
     setRunning(true); setError(null); setPipelineResult(null)
     try {
-      const res = await fetch('/api/cofounder/pipeline/discover', {
+      const res = await fetch(`${API}/api/cofounder/pipeline/discover`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ keyword: keyword.trim(), max_results: limit, auto_generate_ideas: true, auto_send_outreach: autoOutreach }),
       })
